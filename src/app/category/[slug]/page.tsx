@@ -37,19 +37,27 @@ export default async function CategoryPage({ params }: Props) {
   const photoGroups = await getPhotoGroupsByCategory(slug);
 
   return (
-    <main className="min-h-screen px-6 lg:px-12 xl:px-16 pt-[calc(env(safe-area-inset-top)+5.5rem)] sm:pt-24 pb-16">
+    <main className="min-h-screen px-6 lg:px-12 xl:px-16 pt-[calc(env(safe-area-inset-top)+5.5rem)] sm:pt-28 pb-16">
       {/* Category heading */}
       <h1 className="mb-10 font-serif text-xl sm:text-2xl tracking-wide text-center">
         {category.title}
       </h1>
 
       {/* Subcategory blocks with moderate separation and no visible labels */}
-      <div className="w-full max-w-[min(96vw,1920px)] mx-auto">
+      <div className="w-full max-w-[min(92vw,1300px)] mx-auto">
         {photoGroups.map((group) => (
-          <section key={group.id} className="mb-[175px] last:mb-0">
-            <div className="columns-1 sm:columns-2 xl:columns-3 gap-3 sm:gap-4">
+          <section key={group.id} className="mb-3 sm:mb-4 last:mb-0">
+            <div
+              className={`grid gap-3 sm:gap-4 ${
+                group.photos.length <= 1
+                  ? "grid-cols-1"
+                  : group.photos.length === 2
+                    ? "grid-cols-1 sm:grid-cols-2"
+                    : "grid-cols-1 sm:grid-cols-2 xl:grid-cols-3"
+              }`}
+            >
               {group.photos.map((photo) => (
-                <div key={photo.id} className="mb-3 sm:mb-4 break-inside-avoid">
+                <div key={photo.id}>
                   <Image
                     src={photo.src}
                     alt={photo.alt}

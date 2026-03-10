@@ -53,7 +53,7 @@ export default function Navigation({ categories, locale }: NavigationProps) {
     <>
       {/* Mobile top bar: hide/show on scroll, with solid background */}
       <div
-        className={`fixed inset-x-0 top-0 z-[60] border-b border-black/10 bg-white sm:hidden transition-transform duration-300 ${
+        className={`fixed inset-x-0 top-0 z-[60] bg-white sm:hidden transition-transform duration-300 ${
           isOpen || isBarVisible ? "translate-y-0" : "-translate-y-full"
         }`}
       >
