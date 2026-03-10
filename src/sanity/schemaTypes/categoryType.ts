@@ -1,5 +1,5 @@
 import {TagIcon} from '@sanity/icons'
-import {defineField, defineType} from 'sanity'
+import {defineArrayMember, defineField, defineType} from 'sanity'
 
 export const categoryType = defineType({
   name: 'category',
@@ -35,6 +35,68 @@ export const categoryType = defineType({
         maxLength: 96,
       },
       validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'groups',
+      title: 'Photo groups',
+      type: 'array',
+      description: 'Each group renders as one block on category page with spacing between blocks.',
+      of: [
+        defineArrayMember({
+          name: 'group',
+          title: 'Group',
+          type: 'object',
+          fields: [
+            defineField({
+              name: 'name',
+              title: 'Internal name',
+              type: 'string',
+              description: 'Only visible in Studio. Not shown on website.',
+            }),
+            defineField({
+              name: 'sortOrder',
+              title: 'Sort order',
+              type: 'number',
+              initialValue: 100,
+              validation: (Rule) => Rule.required().integer().min(0),
+            }),
+            defineField({
+              name: 'photos',
+              title: 'Photos',
+              type: 'array',
+              description: 'You can upload multiple images at once into this group.',
+              of: [
+                defineArrayMember({
+                  type: 'image',
+                  options: {hotspot: true},
+                  fields: [
+                    defineField({
+                      name: 'alt',
+                      title: 'Alt text',
+                      type: 'string',
+                    }),
+                  ],
+                }),
+              ],
+              validation: (Rule) => Rule.required().min(1),
+            }),
+          ],
+          preview: {
+            select: {
+              title: 'name',
+              photos: 'photos',
+            },
+            prepare({title, photos}) {
+              const count = Array.isArray(photos) ? photos.length : 0
+              return {
+                title: title || 'Unnamed group',
+                subtitle: `${count} photo${count === 1 ? '' : 's'}`,
+              }
+            },
+          },
+        }),
+      ],
+      validation: (Rule) => Rule.required().min(1),
     }),
   ],
   preview: {

@@ -14,8 +14,6 @@ export interface Photo {
   alt: string;
   width: number;
   height: number;
-  subcategoryId: string | null;
-  subcategorySortOrder: number;
 }
 
 export interface PhotoGroup {
@@ -53,26 +51,28 @@ const categoryBySlugQuery = groq`
 `
 
 const photosByCategoryQuery = groq`
-  *[_type == "photo" && category->slug.current == $slug && defined(image.asset)]
-    | order(subcategory->sortOrder asc, subcategory->title asc, sortOrder asc, _createdAt desc) {
-      "id": _id,
-      alt,
-      "src": image.asset->url,
-      "width": image.asset->metadata.dimensions.width,
-      "height": image.asset->metadata.dimensions.height,
-      "subcategoryId": subcategory->_id,
-      "subcategorySortOrder": coalesce(subcategory->sortOrder, 9999)
+  *[_type == "category" && slug.current == $slug][0] {
+    "groups": coalesce(groups, []) | order(sortOrder asc) {
+      "id": _key,
+      "photos": coalesce(photos, [])[defined(asset)] {
+        "id": _key,
+        "alt": coalesce(alt, ""),
+        "src": asset->url,
+        "width": asset->metadata.dimensions.width,
+        "height": asset->metadata.dimensions.height
+      }
     }
+  }.groups
 `
 
 const featuredPhotoQuery = groq`
-  *[_type == "photo" && featured == true && defined(image.asset)]
-    | order(sortOrder asc, _createdAt desc)[0] {
-      "id": _id,
-      alt,
-      "src": image.asset->url,
-      "width": image.asset->metadata.dimensions.width,
-      "height": image.asset->metadata.dimensions.height
+  *[_type == "category" && defined(groups[0].photos[0].asset)]
+    | order(coalesce(titleEn, title, titleCs) asc)[0] {
+      "id": coalesce(groups[0].photos[0]._key, _id),
+      "alt": coalesce(groups[0].photos[0].alt, "Featured photograph"),
+      "src": groups[0].photos[0].asset->url,
+      "width": groups[0].photos[0].asset->metadata.dimensions.width,
+      "height": groups[0].photos[0].asset->metadata.dimensions.height
     }
 `
 
@@ -90,31 +90,8 @@ export async function getCategoryBySlug(slug: string, locale: Locale): Promise<C
 }
 
 export async function getPhotoGroupsByCategory(slug: string): Promise<PhotoGroup[]> {
-  const photos = await client.fetch<Photo[]>(photosByCategoryQuery, {slug}, {next: {revalidate: 60}})
-
-  const groupedMap = new Map<string, {sortOrder: number; photos: Photo[]}>()
-
-  for (const photo of photos) {
-    const groupId = photo.subcategoryId || '__default__'
-    const existing = groupedMap.get(groupId)
-
-    if (existing) {
-      existing.photos.push(photo)
-      continue
-    }
-
-    groupedMap.set(groupId, {
-      sortOrder: photo.subcategorySortOrder,
-      photos: [photo],
-    })
-  }
-
-  return [...groupedMap.entries()]
-    .sort((a, b) => a[1].sortOrder - b[1].sortOrder)
-    .map(([id, value]) => ({
-      id,
-      photos: value.photos,
-    }))
+  const groups = await client.fetch<PhotoGroup[] | null>(photosByCategoryQuery, {slug}, {next: {revalidate: 60}})
+  return groups || []
 }
 
 export async function getFeaturedPhoto(): Promise<Photo | null> {

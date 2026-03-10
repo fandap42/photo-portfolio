@@ -36,11 +36,11 @@ Run the app and open:
 ### How to manage photos
 
 1. Create categories in `Categories`
-2. Upload images in `Photos`
-3. Assign each photo to a category
-4. Set `sortOrder` to control ordering in gallery
-5. Toggle `Featured on homepage` for the homepage image
-6. Delete photos directly from `Photos` in Studio
+2. Open one category document (this is one gallery page)
+3. Add `Photo groups` inside the category
+4. Upload images in each group's `Photos` array (you can add multiple files at once)
+5. Reorder groups with `sortOrder` and array drag-and-drop
+6. Delete images directly inside the group's `Photos`
 
 ### Language toggle and auto locale
 
