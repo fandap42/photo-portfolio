@@ -37,25 +37,26 @@ export default async function CategoryPage({ params }: Props) {
   const photoGroups = await getPhotoGroupsByCategory(slug);
 
   return (
-    <main className="min-h-screen px-6 pt-24 pb-16">
+    <main className="min-h-screen px-6 lg:px-12 xl:px-16 pt-[calc(env(safe-area-inset-top)+5.5rem)] sm:pt-24 pb-16">
       {/* Category heading */}
       <h1 className="mb-10 font-serif text-xl sm:text-2xl tracking-wide text-center">
         {category.title}
       </h1>
 
-      {/* Subcategory blocks with large visual separation and no visible labels */}
-      <div className="max-w-5xl mx-auto">
+      {/* Subcategory blocks with moderate separation and no visible labels */}
+      <div className="max-w-[1280px] mx-auto">
         {photoGroups.map((group) => (
-          <section key={group.id} className="mb-[25vh] last:mb-0">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-8">
+          <section key={group.id} className="mb-[175px] last:mb-0">
+            <div className="columns-1 sm:columns-2 xl:columns-3 gap-3 sm:gap-4">
               {group.photos.map((photo) => (
-                <div key={photo.id} className="relative w-full aspect-square overflow-hidden">
+                <div key={photo.id} className="mb-3 sm:mb-4 break-inside-avoid">
                   <Image
                     src={photo.src}
                     alt={photo.alt}
-                    fill
-                    className="object-contain pointer-events-none"
-                    sizes="(max-width: 640px) 100vw, 40vw"
+                    width={photo.width}
+                    height={photo.height}
+                    className="w-full h-auto pointer-events-none"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw"
                     draggable={false}
                   />
                 </div>
