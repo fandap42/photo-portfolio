@@ -36,6 +36,12 @@ export default async function CategoryPage({ params }: Props) {
 
   const photoGroups = await getPhotoGroupsByCategory(slug);
 
+  function getImageSizes(photoCount: number): string {
+    if (photoCount <= 1) return "(max-width: 640px) 100vw, (max-width: 1400px) 92vw, 1800px";
+    if (photoCount === 2) return "(max-width: 640px) 100vw, (max-width: 1400px) 46vw, 900px";
+    return "(max-width: 640px) 100vw, (max-width: 1400px) 31vw, 620px";
+  }
+
   return (
     <main className="min-h-screen px-6 lg:px-12 xl:px-16 pt-[calc(env(safe-area-inset-top)+5.5rem)] sm:pt-28 pb-16">
       {/* Category heading */}
@@ -64,7 +70,8 @@ export default async function CategoryPage({ params }: Props) {
                     width={photo.width}
                     height={photo.height}
                     className="w-full h-auto pointer-events-none"
-                    sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, (max-width: 1800px) 33vw, 600px"
+                    sizes={getImageSizes(group.photos.length)}
+                    quality={95}
                     draggable={false}
                   />
                 </div>

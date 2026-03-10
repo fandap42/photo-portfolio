@@ -1,6 +1,8 @@
 import {groq} from 'next-sanity'
 import {client} from '@/sanity/lib/client'
+import {urlFor} from '@/sanity/lib/image'
 import type {Locale} from '@/lib/i18n'
+import type {SanityImageSource} from '@sanity/image-url/lib/types/types'
 
 export interface Category {
   id: string;
@@ -14,6 +16,16 @@ export interface Photo {
   alt: string;
   width: number;
   height: number;
+}
+
+interface RawPhoto extends Omit<Photo, 'src'> {
+  src?: string;
+  source: SanityImageSource;
+}
+
+interface RawPhotoGroup {
+  id: string;
+  photos: RawPhoto[];
 }
 
 export interface PhotoGroup {
@@ -58,6 +70,11 @@ const photosByCategoryQuery = groq`
         "id": _key,
         "alt": coalesce(alt, ""),
         "src": asset->url,
+        "source": {
+          "asset": asset,
+          "crop": crop,
+          "hotspot": hotspot
+        },
         "width": asset->metadata.dimensions.width,
         "height": asset->metadata.dimensions.height
       }
@@ -71,10 +88,19 @@ const featuredPhotoQuery = groq`
       "id": coalesce(groups[0].photos[0]._key, _id),
       "alt": coalesce(groups[0].photos[0].alt, "Featured photograph"),
       "src": groups[0].photos[0].asset->url,
+      "source": {
+        "asset": groups[0].photos[0].asset,
+        "crop": groups[0].photos[0].crop,
+        "hotspot": groups[0].photos[0].hotspot
+      },
       "width": groups[0].photos[0].asset->metadata.dimensions.width,
       "height": groups[0].photos[0].asset->metadata.dimensions.height
     }
 `
+
+function buildImageUrl(source: SanityImageSource, width: number): string {
+  return urlFor(source).auto('format').fit('max').quality(95).width(width).url()
+}
 
 export async function getCategories(locale: Locale): Promise<Category[]> {
   return client.fetch(categoriesQuery, {locale}, {next: {revalidate: 60}})
@@ -90,10 +116,30 @@ export async function getCategoryBySlug(slug: string, locale: Locale): Promise<C
 }
 
 export async function getPhotoGroupsByCategory(slug: string): Promise<PhotoGroup[]> {
-  const groups = await client.fetch<PhotoGroup[] | null>(photosByCategoryQuery, {slug}, {next: {revalidate: 60}})
-  return groups || []
+  const groups = await client.fetch<RawPhotoGroup[] | null>(photosByCategoryQuery, {slug}, {next: {revalidate: 60}})
+  if (!groups) return []
+
+  return groups.map((group) => ({
+    ...group,
+    photos: group.photos.map((photo) => ({
+      id: photo.id,
+      alt: photo.alt,
+      width: photo.width,
+      height: photo.height,
+      src: buildImageUrl(photo.source, Math.min(photo.width, 3200)),
+    })),
+  }))
 }
 
 export async function getFeaturedPhoto(): Promise<Photo | null> {
-  return client.fetch(featuredPhotoQuery, {}, {next: {revalidate: 60}})
+  const photo = await client.fetch<(RawPhoto & {id: string}) | null>(featuredPhotoQuery, {}, {next: {revalidate: 60}})
+  if (!photo) return null
+
+  return {
+    id: photo.id,
+    alt: photo.alt,
+    width: photo.width,
+    height: photo.height,
+    src: buildImageUrl(photo.source, Math.min(photo.width, 1200)),
+  }
 }
