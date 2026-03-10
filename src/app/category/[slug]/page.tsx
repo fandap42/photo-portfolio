@@ -50,7 +50,7 @@ export default async function CategoryPage({ params }: Props) {
       </h1>
 
       {/* Subcategory blocks with moderate separation and no visible labels */}
-      <div className="w-full max-w-[min(92vw,1300px)] mx-auto">
+      <div className="w-full max-w-[min(88vw,1000px)] mx-auto">
         {photoGroups.map((group) => (
           <section key={group.id} className="mb-3 sm:mb-4 last:mb-0">
             <div
