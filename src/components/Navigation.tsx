@@ -3,9 +3,18 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
-import { categories } from "@/lib/data";
 
-export default function Navigation() {
+interface NavigationCategory {
+  id: string;
+  slug: string;
+  title: string;
+}
+
+interface NavigationProps {
+  categories: NavigationCategory[];
+}
+
+export default function Navigation({ categories }: NavigationProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (

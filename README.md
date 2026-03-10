@@ -20,7 +20,37 @@ Open [http://localhost:3000](http://localhost:3000) to see the result.
 
 ## Sanity CMS Integration
 
-Replace the helper functions in `src/lib/data.ts` with Sanity GROQ queries using the `@sanity/client` package when ready.
+The project is now connected to Sanity headless CMS.
+
+### Content model in Studio
+
+- Category: category name and slug used in route `/category/[slug]`
+- Photo: uploaded image, alt text, category reference, sort order, and featured flag for homepage
+
+### Open Studio
+
+Run the app and open:
+
+- http://localhost:3000/studio
+
+### How to manage photos
+
+1. Create categories in `Categories`
+2. Upload images in `Photos`
+3. Assign each photo to a category
+4. Set `sortOrder` to control ordering in gallery
+5. Toggle `Featured on homepage` for the homepage image
+6. Delete photos directly from `Photos` in Studio
+
+### Required environment variables
+
+Create `.env.local` with:
+
+```env
+NEXT_PUBLIC_SANITY_PROJECT_ID=your-project-id
+NEXT_PUBLIC_SANITY_DATASET=production
+NEXT_PUBLIC_SANITY_API_VERSION=2026-03-10
+```
 
 ## Deploy on Vercel
 

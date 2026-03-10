@@ -10,13 +10,13 @@ interface Props {
 // Pre-generate all category pages at build time.
 // Replace with Sanity-backed data when integrating CMS.
 export async function generateStaticParams() {
-  const categories = getCategories();
+  const categories = await getCategories();
   return categories.map((c) => ({ slug: c.slug }));
 }
 
 export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
-  const category = getCategoryBySlug(slug);
+  const category = await getCategoryBySlug(slug);
   if (!category) return {};
   return {
     title: `${category.title} – František Pavlík`,
@@ -25,11 +25,11 @@ export async function generateMetadata({ params }: Props) {
 
 export default async function CategoryPage({ params }: Props) {
   const { slug } = await params;
-  const category = getCategoryBySlug(slug);
+  const category = await getCategoryBySlug(slug);
 
   if (!category) notFound();
 
-  const photos = getPhotosByCategory(slug);
+  const photos = await getPhotosByCategory(slug);
 
   return (
     <main className="min-h-screen px-6 pt-24 pb-16">

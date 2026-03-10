@@ -1,17 +1,20 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Navigation from "@/components/Navigation";
+import { getCategories } from "@/lib/data";
 
 export const metadata: Metadata = {
   title: "František Pavlík – Photography",
   description: "Photography portfolio of František Pavlík",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const categories = await getCategories();
+
   return (
     <html lang="cs">
       <head>
@@ -24,7 +27,7 @@ export default function RootLayout({
         />
       </head>
       <body className="bg-white text-black antialiased font-serif">
-        <Navigation />
+        <Navigation categories={categories} />
         {children}
       </body>
     </html>
