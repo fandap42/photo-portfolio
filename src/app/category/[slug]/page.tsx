@@ -38,16 +38,17 @@ export default async function CategoryPage({ params }: Props) {
         {category.title}
       </h1>
 
-      {/* 2-column photo grid */}
-      <div className="grid grid-cols-2 gap-4 sm:gap-8 max-w-5xl mx-auto">
+      {/* 2-column photo grid (1 column on mobile) */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-8 max-w-5xl mx-auto">
         {photos.map((photo) => (
           <div key={photo.id} className="relative w-full aspect-square overflow-hidden">
             <Image
               src={photo.src}
               alt={photo.alt}
               fill
-              className="object-cover hover:scale-105 transition-transform duration-500"
-              sizes="(max-width: 640px) 50vw, 40vw"
+              className="object-cover pointer-events-none"
+              sizes="(max-width: 640px) 100vw, 40vw"
+              draggable={false}
             />
           </div>
         ))}

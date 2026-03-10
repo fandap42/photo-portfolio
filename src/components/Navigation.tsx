@@ -24,25 +24,25 @@ export default function Navigation() {
 
       {/* Fullscreen overlay */}
       {isOpen && (
-        <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-white">
+        <div className="fixed inset-0 z-50 bg-white">
           {/* Close button */}
           <button
             onClick={() => setIsOpen(false)}
             aria-label="Close menu"
             className="absolute right-6 top-6 text-black hover:opacity-60 transition-opacity"
           >
-            <X size={32} strokeWidth={1.5} />
+            <X size={24} strokeWidth={1.5} />
           </button>
 
-          {/* Navigation links */}
-          <nav>
-            <ul className="flex flex-col items-center gap-8">
+          {/* Navigation links – small text, top-left aligned */}
+          <nav className="pt-16 pl-8">
+            <ul className="flex flex-col items-start gap-4">
               {categories.map((category) => (
                 <li key={category.slug}>
                   <Link
                     href={`/category/${category.slug}`}
                     onClick={() => setIsOpen(false)}
-                    className="font-serif text-5xl sm:text-6xl text-black tracking-wide hover:opacity-50 transition-opacity"
+                    className="font-serif text-base tracking-widest uppercase text-black hover:opacity-50 transition-opacity"
                   >
                     {category.title}
                   </Link>
