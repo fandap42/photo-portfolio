@@ -44,7 +44,7 @@ export default async function CategoryPage({ params }: Props) {
       </h1>
 
       {/* Subcategory blocks with moderate separation and no visible labels */}
-      <div className="max-w-[1280px] mx-auto">
+      <div className="w-full max-w-[min(96vw,1920px)] mx-auto">
         {photoGroups.map((group) => (
           <section key={group.id} className="mb-[175px] last:mb-0">
             <div className="columns-1 sm:columns-2 xl:columns-3 gap-3 sm:gap-4">
@@ -56,7 +56,7 @@ export default async function CategoryPage({ params }: Props) {
                     width={photo.width}
                     height={photo.height}
                     className="w-full h-auto pointer-events-none"
-                    sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, (max-width: 1800px) 33vw, 600px"
                     draggable={false}
                   />
                 </div>
