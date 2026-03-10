@@ -1,7 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getCategoryBySlug, getPhotoGroupsByCategory, getCategories } from "@/lib/data";
+import { getCategoryBySlug, getPhotoGroupsByCategory, getCategorySlugs } from "@/lib/data";
+import { getLocaleLabels } from "@/lib/i18n";
+import { getRequestLocale } from "@/lib/i18n.server";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -10,13 +12,14 @@ interface Props {
 // Pre-generate all category pages at build time.
 // Replace with Sanity-backed data when integrating CMS.
 export async function generateStaticParams() {
-  const categories = await getCategories();
-  return categories.map((c) => ({ slug: c.slug }));
+  const slugs = await getCategorySlugs();
+  return slugs.map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
-  const category = await getCategoryBySlug(slug);
+  const locale = await getRequestLocale();
+  const category = await getCategoryBySlug(slug, locale);
   if (!category) return {};
   return {
     title: `${category.title} – František Pavlík`,
@@ -25,7 +28,9 @@ export async function generateMetadata({ params }: Props) {
 
 export default async function CategoryPage({ params }: Props) {
   const { slug } = await params;
-  const category = await getCategoryBySlug(slug);
+  const locale = await getRequestLocale();
+  const labels = getLocaleLabels(locale);
+  const category = await getCategoryBySlug(slug, locale);
 
   if (!category) notFound();
 
@@ -66,7 +71,7 @@ export default async function CategoryPage({ params }: Props) {
           href="/"
           className="font-serif text-xs tracking-widest hover:opacity-50 transition-opacity"
         >
-          ← Back
+          ← {labels.back}
         </Link>
       </div>
     </main>

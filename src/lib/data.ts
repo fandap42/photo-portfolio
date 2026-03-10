@@ -1,5 +1,6 @@
 import {groq} from 'next-sanity'
 import {client} from '@/sanity/lib/client'
+import type {Locale} from '@/lib/i18n'
 
 export interface Category {
   id: string;
@@ -23,9 +24,19 @@ export interface PhotoGroup {
 }
 
 const categoriesQuery = groq`
-  *[_type == "category" && defined(slug.current)] | order(title asc) {
+  *[_type == "category" && defined(slug.current)]
+    | order(coalesce(titleEn, title, titleCs) asc) {
     "id": _id,
-    title,
+    "title": select(
+      $locale == "cs" => coalesce(titleCs, titleEn, title),
+      coalesce(titleEn, titleCs, title)
+    ),
+    "slug": slug.current
+  }
+`
+
+const categorySlugsQuery = groq`
+  *[_type == "category" && defined(slug.current)] {
     "slug": slug.current
   }
 `
@@ -33,7 +44,10 @@ const categoriesQuery = groq`
 const categoryBySlugQuery = groq`
   *[_type == "category" && slug.current == $slug][0] {
     "id": _id,
-    title,
+    "title": select(
+      $locale == "cs" => coalesce(titleCs, titleEn, title),
+      coalesce(titleEn, titleCs, title)
+    ),
     "slug": slug.current
   }
 `
@@ -62,12 +76,17 @@ const featuredPhotoQuery = groq`
     }
 `
 
-export async function getCategories(): Promise<Category[]> {
-  return client.fetch(categoriesQuery, {}, {next: {revalidate: 60}})
+export async function getCategories(locale: Locale): Promise<Category[]> {
+  return client.fetch(categoriesQuery, {locale}, {next: {revalidate: 60}})
 }
 
-export async function getCategoryBySlug(slug: string): Promise<Category | null> {
-  return client.fetch(categoryBySlugQuery, {slug}, {next: {revalidate: 60}})
+export async function getCategorySlugs(): Promise<string[]> {
+  const rows = await client.fetch<{slug: string}[]>(categorySlugsQuery, {}, {next: {revalidate: 60}})
+  return rows.map((row) => row.slug)
+}
+
+export async function getCategoryBySlug(slug: string, locale: Locale): Promise<Category | null> {
+  return client.fetch(categoryBySlugQuery, {slug, locale}, {next: {revalidate: 60}})
 }
 
 export async function getPhotoGroupsByCategory(slug: string): Promise<PhotoGroup[]> {

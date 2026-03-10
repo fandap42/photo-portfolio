@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Navigation from "@/components/Navigation";
 import { getCategories } from "@/lib/data";
+import { getRequestLocale } from "@/lib/i18n.server";
 
 export const metadata: Metadata = {
   title: "František Pavlík – Photography",
@@ -13,10 +14,11 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const categories = await getCategories();
+  const locale = await getRequestLocale();
+  const categories = await getCategories(locale);
 
   return (
-    <html lang="cs">
+    <html lang={locale}>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -27,7 +29,7 @@ export default async function RootLayout({
         />
       </head>
       <body className="bg-white text-black antialiased font-serif">
-        <Navigation categories={categories} />
+        <Navigation categories={categories} locale={locale} />
         {children}
       </body>
     </html>

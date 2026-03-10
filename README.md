@@ -42,6 +42,13 @@ Run the app and open:
 5. Toggle `Featured on homepage` for the homepage image
 6. Delete photos directly from `Photos` in Studio
 
+### Language toggle and auto locale
+
+- Categories support bilingual titles (`Title (Czech)` and `Title (English)`)
+- The site automatically defaults to Czech for browsers with Czech locale, otherwise English
+- Visitors can switch language using the `CZ/EN` toggle in the top-right corner
+- Selected language is saved in a cookie and reused on next visit
+
 ### Required environment variables
 
 Create `.env.local` with:

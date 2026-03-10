@@ -2,7 +2,9 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Menu, X } from "lucide-react";
+import { LOCALE_COOKIE_NAME, type Locale, getLocaleLabels } from "@/lib/i18n";
 
 interface NavigationCategory {
   id: string;
@@ -12,13 +14,30 @@ interface NavigationCategory {
 
 interface NavigationProps {
   categories: NavigationCategory[];
+  locale: Locale;
 }
 
-export default function Navigation({ categories }: NavigationProps) {
+export default function Navigation({ categories, locale }: NavigationProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const router = useRouter();
+  const labels = getLocaleLabels(locale);
+
+  function toggleLocale() {
+    const nextLocale = locale === "cs" ? "en" : "cs";
+    document.cookie = `${LOCALE_COOKIE_NAME}=${nextLocale}; Path=/; Max-Age=31536000; SameSite=Lax`;
+    router.refresh();
+  }
 
   return (
     <>
+      <button
+        onClick={toggleLocale}
+        aria-label={labels.switchAriaLabel}
+        className="fixed right-6 top-6 z-40 font-serif text-xs tracking-widest uppercase text-black hover:opacity-60 transition-opacity"
+      >
+        {labels.switchTo}
+      </button>
+
       {/* Menu trigger – fixed top-left */}
       <button
         onClick={() => setIsOpen(true)}
@@ -27,7 +46,7 @@ export default function Navigation({ categories }: NavigationProps) {
       >
         <Menu size={28} strokeWidth={1.5} />
         <span className="hidden sm:inline text-sm tracking-widest lowercase font-serif">
-          Menu
+          {labels.menu}
         </span>
       </button>
 
