@@ -1,0 +1,10 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-serif: "Playfair Display", Georgia, "Times New Roman", serif;
+}
+
+body {
+  background-color: #ffffff;
+  color: #000000;
+}
