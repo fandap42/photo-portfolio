@@ -29,7 +29,7 @@ export default async function Home() {
 
       {/* Instagram icon */}
       <a
-        href="https://instagram.com"
+        href="https://www.instagram.com/fandapka/"
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Instagram"
@@ -40,10 +40,10 @@ export default async function Home() {
 
       {/* Email */}
       <a
-        href="mailto:frantisek@example.com"
+        href="mailto:pavlik.frantisek42@gmail.com"
         className="font-serif text-xs tracking-widest text-black hover:opacity-50 transition-opacity"
       >
-        frantisek@example.com
+        pavlik.frantisek42@gmail.com
       </a>
     </main>
   );
