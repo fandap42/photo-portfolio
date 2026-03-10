@@ -49,7 +49,7 @@ export default async function CategoryPage({ params }: Props) {
                     src={photo.src}
                     alt={photo.alt}
                     fill
-                    className="object-cover pointer-events-none"
+                    className="object-contain pointer-events-none"
                     sizes="(max-width: 640px) 100vw, 40vw"
                     draggable={false}
                   />

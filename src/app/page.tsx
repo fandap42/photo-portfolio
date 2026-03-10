@@ -21,7 +21,7 @@ export default async function Home() {
           }
           alt={featuredPhoto?.alt || "Featured photograph by František Pavlík"}
           fill
-          className="object-cover"
+          className="object-contain"
           priority
           sizes="300px"
         />
