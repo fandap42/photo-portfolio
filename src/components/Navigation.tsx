@@ -38,30 +38,18 @@ export default function Navigation({ categories, locale }: NavigationProps) {
         {labels.switchTo}
       </button>
 
-      {/* Menu trigger – fixed top-left */}
+      {/* Menu trigger / close button at the same top-left position */}
       <button
-        onClick={() => setIsOpen(true)}
-        aria-label="Open menu"
-        className="fixed left-6 top-6 z-40 flex items-center gap-2 text-black hover:opacity-60 transition-opacity"
+        onClick={() => setIsOpen((prev) => !prev)}
+        aria-label={isOpen ? "Close menu" : "Open menu"}
+        className="fixed left-6 top-6 z-[60] text-black hover:opacity-60 transition-opacity"
       >
-        <Menu size={28} strokeWidth={1.5} />
-        <span className="hidden sm:inline text-sm tracking-widest lowercase font-serif">
-          {labels.menu}
-        </span>
+        {isOpen ? <X size={24} strokeWidth={1.5} /> : <Menu size={28} strokeWidth={1.5} />}
       </button>
 
       {/* Fullscreen overlay */}
       {isOpen && (
         <div className="fixed inset-0 z-50 bg-white">
-          {/* Close button */}
-          <button
-            onClick={() => setIsOpen(false)}
-            aria-label="Close menu"
-            className="absolute right-6 top-6 text-black hover:opacity-60 transition-opacity"
-          >
-            <X size={24} strokeWidth={1.5} />
-          </button>
-
           {/* Navigation links – small text, top-left aligned */}
           <nav className="pt-16 pl-8">
             <ul className="flex flex-col items-start gap-4">

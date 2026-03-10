@@ -39,7 +39,7 @@ export default async function CategoryPage({ params }: Props) {
   return (
     <main className="min-h-screen px-6 pt-24 pb-16">
       {/* Category heading */}
-      <h1 className="mb-10 font-serif text-3xl sm:text-4xl tracking-wide text-center">
+      <h1 className="mb-10 font-serif text-xl sm:text-2xl tracking-wide text-center">
         {category.title}
       </h1>
 

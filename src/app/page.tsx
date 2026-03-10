@@ -8,7 +8,7 @@ export default async function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center px-4">
       {/* Photographer name */}
-      <h1 className="mb-8 font-serif text-3xl sm:text-4xl tracking-wide text-center">
+      <h1 className="mb-8 font-serif text-xl sm:text-2xl tracking-wide text-center">
         František Pavlík
       </h1>
 
