@@ -1,21 +1,27 @@
 import Image from "next/image";
-import { Instagram } from "lucide-react";
+import { SiInstagram } from "react-icons/si";
+import { getFeaturedPhoto } from "@/lib/data";
 
-export default function Home() {
+export default async function Home() {
+  const featuredPhoto = await getFeaturedPhoto();
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-center px-4">
       {/* Photographer name */}
-      <h1 className="mb-8 font-serif text-4xl sm:text-5xl tracking-wide text-center">
+      <h1 className="mb-8 font-serif text-xl sm:text-2xl tracking-wide text-center">
         František Pavlík
       </h1>
 
       {/* Featured photo */}
       <div className="relative w-full max-w-[300px] aspect-square overflow-hidden mb-8">
         <Image
-          src="https://images.unsplash.com/photo-1500051638674-ff996a0ec29e?w=600&auto=format&fit=crop&q=80"
-          alt="Featured photograph by František Pavlík"
+          src={
+            featuredPhoto?.src ||
+            "https://images.unsplash.com/photo-1500051638674-ff996a0ec29e?w=600&auto=format&fit=crop&q=80"
+          }
+          alt={featuredPhoto?.alt || "Featured photograph by František Pavlík"}
           fill
-          className="object-cover"
+          className="object-contain"
           priority
           sizes="300px"
         />
@@ -23,21 +29,21 @@ export default function Home() {
 
       {/* Instagram icon */}
       <a
-        href="https://instagram.com"
+        href="https://www.instagram.com/fandapka/"
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Instagram"
         className="mb-4 text-black hover:opacity-50 transition-opacity"
       >
-        <Instagram size={48} strokeWidth={1.25} />
+        <SiInstagram size={44} />
       </a>
 
       {/* Email */}
       <a
-        href="mailto:frantisek@example.com"
-        className="font-serif text-sm tracking-widest text-black hover:opacity-50 transition-opacity"
+        href="mailto:pavlik.frantisek42@gmail.com"
+        className="font-serif text-xs tracking-widest text-black hover:opacity-50 transition-opacity"
       >
-        frantisek@example.com
+        pavlik.frantisek42@gmail.com
       </a>
     </main>
   );
