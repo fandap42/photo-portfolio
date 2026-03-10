@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Instagram } from "lucide-react";
+import { SiInstagram } from "react-icons/si";
 import { getFeaturedPhoto } from "@/lib/data";
 
 export default async function Home() {
@@ -35,7 +35,7 @@ export default async function Home() {
         aria-label="Instagram"
         className="mb-4 text-black hover:opacity-50 transition-opacity"
       >
-        <Instagram size={48} strokeWidth={1.25} />
+        <SiInstagram size={44} />
       </a>
 
       {/* Email */}
