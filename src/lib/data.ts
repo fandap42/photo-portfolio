@@ -4,6 +4,8 @@ import {urlFor} from '@/sanity/lib/image'
 import type {Locale} from '@/lib/i18n'
 import type {SanityImageSource} from '@sanity/image-url/lib/types/types'
 
+const HOMEPAGE_FEATURED_CATEGORY_SLUG = 'homepage-featured'
+
 export interface Category {
   id: string;
   slug: string;
@@ -34,7 +36,7 @@ export interface PhotoGroup {
 }
 
 const categoriesQuery = groq`
-  *[_type == "category" && defined(slug.current)]
+  *[_type == "category" && defined(slug.current) && slug.current != $homepageFeaturedSlug]
     | order(coalesce(titleEn, title, titleCs) asc) {
     "id": _id,
     "title": select(
@@ -46,7 +48,7 @@ const categoriesQuery = groq`
 `
 
 const categorySlugsQuery = groq`
-  *[_type == "category" && defined(slug.current)] {
+  *[_type == "category" && defined(slug.current) && slug.current != $homepageFeaturedSlug] {
     "slug": slug.current
   }
 `
@@ -82,8 +84,23 @@ const photosByCategoryQuery = groq`
   }.groups
 `
 
-const featuredPhotoQuery = groq`
-  *[_type == "category" && defined(groups[0].photos[0].asset)]
+const featuredPhotoFromHomepageCategoryQuery = groq`
+  *[_type == "category" && slug.current == $homepageFeaturedSlug && defined(groups[0].photos[0].asset)][0] {
+      "id": coalesce(groups[0].photos[0]._key, _id),
+      "alt": coalesce(groups[0].photos[0].alt, "Featured photograph"),
+      "src": groups[0].photos[0].asset->url,
+      "source": {
+        "asset": groups[0].photos[0].asset,
+        "crop": groups[0].photos[0].crop,
+        "hotspot": groups[0].photos[0].hotspot
+      },
+      "width": groups[0].photos[0].asset->metadata.dimensions.width,
+      "height": groups[0].photos[0].asset->metadata.dimensions.height
+    }
+`
+
+const featuredPhotoFallbackQuery = groq`
+  *[_type == "category" && slug.current != $homepageFeaturedSlug && defined(groups[0].photos[0].asset)]
     | order(coalesce(titleEn, title, titleCs) asc)[0] {
       "id": coalesce(groups[0].photos[0]._key, _id),
       "alt": coalesce(groups[0].photos[0].alt, "Featured photograph"),
@@ -103,11 +120,19 @@ function buildImageUrl(source: SanityImageSource, width: number): string {
 }
 
 export async function getCategories(locale: Locale): Promise<Category[]> {
-  return client.fetch(categoriesQuery, {locale}, {next: {revalidate: 60}})
+  return client.fetch(
+    categoriesQuery,
+    {locale, homepageFeaturedSlug: HOMEPAGE_FEATURED_CATEGORY_SLUG},
+    {next: {revalidate: 60}},
+  )
 }
 
 export async function getCategorySlugs(): Promise<string[]> {
-  const rows = await client.fetch<{slug: string}[]>(categorySlugsQuery, {}, {next: {revalidate: 60}})
+  const rows = await client.fetch<{slug: string}[]>(
+    categorySlugsQuery,
+    {homepageFeaturedSlug: HOMEPAGE_FEATURED_CATEGORY_SLUG},
+    {next: {revalidate: 60}},
+  )
   return rows.map((row) => row.slug)
 }
 
@@ -132,14 +157,25 @@ export async function getPhotoGroupsByCategory(slug: string): Promise<PhotoGroup
 }
 
 export async function getFeaturedPhoto(): Promise<Photo | null> {
-  const photo = await client.fetch<(RawPhoto & {id: string}) | null>(featuredPhotoQuery, {}, {next: {revalidate: 60}})
-  if (!photo) return null
+  const featuredParams = {homepageFeaturedSlug: HOMEPAGE_FEATURED_CATEGORY_SLUG}
+  const photo = await client.fetch<(RawPhoto & {id: string}) | null>(
+    featuredPhotoFromHomepageCategoryQuery,
+    featuredParams,
+    {next: {revalidate: 60}},
+  )
+  const fallbackPhoto = photo
+    ? null
+    : await client.fetch<(RawPhoto & {id: string}) | null>(featuredPhotoFallbackQuery, featuredParams, {
+        next: {revalidate: 60},
+      })
+  const selectedPhoto = photo || fallbackPhoto
+  if (!selectedPhoto) return null
 
   return {
-    id: photo.id,
-    alt: photo.alt,
-    width: photo.width,
-    height: photo.height,
-    src: buildImageUrl(photo.source, Math.min(photo.width, 1200)),
+    id: selectedPhoto.id,
+    alt: selectedPhoto.alt,
+    width: selectedPhoto.width,
+    height: selectedPhoto.height,
+    src: buildImageUrl(selectedPhoto.source, Math.min(selectedPhoto.width, 1200)),
   }
 }
