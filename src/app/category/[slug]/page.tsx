@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getCategoryBySlug, getPhotosByCategory, getCategories } from "@/lib/data";
+import { getCategoryBySlug, getPhotoGroupsByCategory, getCategories } from "@/lib/data";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -29,7 +29,7 @@ export default async function CategoryPage({ params }: Props) {
 
   if (!category) notFound();
 
-  const photos = await getPhotosByCategory(slug);
+  const photoGroups = await getPhotoGroupsByCategory(slug);
 
   return (
     <main className="min-h-screen px-6 pt-24 pb-16">
@@ -38,19 +38,25 @@ export default async function CategoryPage({ params }: Props) {
         {category.title}
       </h1>
 
-      {/* 2-column photo grid (1 column on mobile) */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-8 max-w-5xl mx-auto">
-        {photos.map((photo) => (
-          <div key={photo.id} className="relative w-full aspect-square overflow-hidden">
-            <Image
-              src={photo.src}
-              alt={photo.alt}
-              fill
-              className="object-cover pointer-events-none"
-              sizes="(max-width: 640px) 100vw, 40vw"
-              draggable={false}
-            />
-          </div>
+      {/* Subcategory blocks with large visual separation and no visible labels */}
+      <div className="max-w-5xl mx-auto">
+        {photoGroups.map((group) => (
+          <section key={group.id} className="mb-[25vh] last:mb-0">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-8">
+              {group.photos.map((photo) => (
+                <div key={photo.id} className="relative w-full aspect-square overflow-hidden">
+                  <Image
+                    src={photo.src}
+                    alt={photo.alt}
+                    fill
+                    className="object-cover pointer-events-none"
+                    sizes="(max-width: 640px) 100vw, 40vw"
+                    draggable={false}
+                  />
+                </div>
+              ))}
+            </div>
+          </section>
         ))}
       </div>
 

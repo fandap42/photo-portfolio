@@ -38,6 +38,31 @@ export const photoType = defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: 'subcategory',
+      title: 'Subcategory',
+      type: 'reference',
+      to: [{type: 'subcategory'}],
+      options: {
+        disableNew: false,
+        filter: ({document}) => {
+          const categoryRef = (document?.category as {_ref?: string} | undefined)?._ref
+
+          if (!categoryRef) {
+            return {
+              filter: 'false',
+            }
+          }
+
+          return {
+            filter: 'category._ref == $categoryRef',
+            params: {categoryRef},
+          }
+        },
+      },
+      description:
+        'Optional grouping inside a category. Select category first. No heading is shown on the website.',
+    }),
+    defineField({
       name: 'sortOrder',
       title: 'Sort order',
       type: 'number',
@@ -67,13 +92,14 @@ export const photoType = defineType({
       title: 'title',
       media: 'image',
       categoryTitle: 'category.title',
+      subcategoryTitle: 'subcategory.title',
       featured: 'featured',
     },
-    prepare({title, media, categoryTitle, featured}) {
+    prepare({title, media, categoryTitle, subcategoryTitle, featured}) {
       return {
         title,
         media,
-        subtitle: `${categoryTitle || 'No category'}${featured ? ' • Featured' : ''}`,
+        subtitle: `${categoryTitle || 'No category'}${subcategoryTitle ? ` / ${subcategoryTitle}` : ''}${featured ? ' • Featured' : ''}`,
       }
     },
   },

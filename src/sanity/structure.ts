@@ -6,9 +6,10 @@ export const structure: StructureResolver = (S) =>
     .title('Content')
     .items([
       S.documentTypeListItem('category').title('Categories'),
+      S.documentTypeListItem('subcategory').title('Subcategories'),
       S.documentTypeListItem('photo').title('Photos'),
       S.divider(),
       ...S.documentTypeListItems().filter(
-        (item) => item.getId() && !['category', 'photo'].includes(item.getId() as string)
+        (item) => item.getId() && !['category', 'subcategory', 'photo'].includes(item.getId() as string)
       ),
     ])

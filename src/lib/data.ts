@@ -13,6 +13,13 @@ export interface Photo {
   alt: string;
   width: number;
   height: number;
+  subcategoryId: string | null;
+  subcategorySortOrder: number;
+}
+
+export interface PhotoGroup {
+  id: string;
+  photos: Photo[];
 }
 
 const categoriesQuery = groq`
@@ -33,12 +40,14 @@ const categoryBySlugQuery = groq`
 
 const photosByCategoryQuery = groq`
   *[_type == "photo" && category->slug.current == $slug && defined(image.asset)]
-    | order(sortOrder asc, _createdAt desc) {
+    | order(subcategory->sortOrder asc, subcategory->title asc, sortOrder asc, _createdAt desc) {
       "id": _id,
       alt,
       "src": image.asset->url,
       "width": image.asset->metadata.dimensions.width,
-      "height": image.asset->metadata.dimensions.height
+      "height": image.asset->metadata.dimensions.height,
+      "subcategoryId": subcategory->_id,
+      "subcategorySortOrder": coalesce(subcategory->sortOrder, 9999)
     }
 `
 
@@ -61,8 +70,32 @@ export async function getCategoryBySlug(slug: string): Promise<Category | null> 
   return client.fetch(categoryBySlugQuery, {slug}, {next: {revalidate: 60}})
 }
 
-export async function getPhotosByCategory(slug: string): Promise<Photo[]> {
-  return client.fetch(photosByCategoryQuery, {slug}, {next: {revalidate: 60}})
+export async function getPhotoGroupsByCategory(slug: string): Promise<PhotoGroup[]> {
+  const photos = await client.fetch<Photo[]>(photosByCategoryQuery, {slug}, {next: {revalidate: 60}})
+
+  const groupedMap = new Map<string, {sortOrder: number; photos: Photo[]}>()
+
+  for (const photo of photos) {
+    const groupId = photo.subcategoryId || '__default__'
+    const existing = groupedMap.get(groupId)
+
+    if (existing) {
+      existing.photos.push(photo)
+      continue
+    }
+
+    groupedMap.set(groupId, {
+      sortOrder: photo.subcategorySortOrder,
+      photos: [photo],
+    })
+  }
+
+  return [...groupedMap.entries()]
+    .sort((a, b) => a[1].sortOrder - b[1].sortOrder)
+    .map(([id, value]) => ({
+      id,
+      photos: value.photos,
+    }))
 }
 
 export async function getFeaturedPhoto(): Promise<Photo | null> {
