@@ -17,7 +17,7 @@ export default function Navigation() {
         className="fixed left-6 top-6 z-40 flex items-center gap-2 text-black hover:opacity-60 transition-opacity"
       >
         <Menu size={28} strokeWidth={1.5} />
-        <span className="hidden sm:inline text-sm tracking-widest uppercase font-serif">
+        <span className="hidden sm:inline text-sm tracking-widest lowercase font-serif">
           Menu
         </span>
       </button>
@@ -42,7 +42,7 @@ export default function Navigation() {
                   <Link
                     href={`/category/${category.slug}`}
                     onClick={() => setIsOpen(false)}
-                    className="font-serif text-base tracking-widest uppercase text-black hover:opacity-50 transition-opacity"
+                    className="font-serif text-base tracking-widest lowercase text-black hover:opacity-50 transition-opacity"
                   >
                     {category.title}
                   </Link>

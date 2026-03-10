@@ -5,7 +5,7 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center px-4">
       {/* Photographer name */}
-      <h1 className="mb-8 font-serif text-4xl sm:text-5xl tracking-wide text-center">
+      <h1 className="mb-8 font-serif text-3xl sm:text-4xl tracking-wide text-center">
         František Pavlík
       </h1>
 
@@ -35,7 +35,7 @@ export default function Home() {
       {/* Email */}
       <a
         href="mailto:frantisek@example.com"
-        className="font-serif text-sm tracking-widest text-black hover:opacity-50 transition-opacity"
+        className="font-serif text-xs tracking-widest text-black hover:opacity-50 transition-opacity"
       >
         frantisek@example.com
       </a>
