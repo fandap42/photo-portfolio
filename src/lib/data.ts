@@ -5,6 +5,7 @@ import type {Locale} from '@/lib/i18n'
 import type {SanityImageSource} from '@sanity/image-url/lib/types/types'
 
 const HOMEPAGE_FEATURED_CATEGORY_SLUG = 'homepage-featured'
+const CATEGORY_SORT_ORDER_DEFAULT = 100
 
 export interface Category {
   id: string;
@@ -37,7 +38,7 @@ export interface PhotoGroup {
 
 const categoriesQuery = groq`
   *[_type == "category" && defined(slug.current) && slug.current != $homepageFeaturedSlug]
-    | order(coalesce(titleEn, title, titleCs) asc) {
+    | order(coalesce(sortOrder, $defaultCategorySortOrder) asc, coalesce(titleEn, title, titleCs) asc) {
     "id": _id,
     "title": select(
       $locale == "cs" => coalesce(titleCs, titleEn, title),
@@ -122,7 +123,11 @@ function buildImageUrl(source: SanityImageSource, width: number): string {
 export async function getCategories(locale: Locale): Promise<Category[]> {
   return client.fetch(
     categoriesQuery,
-    {locale, homepageFeaturedSlug: HOMEPAGE_FEATURED_CATEGORY_SLUG},
+    {
+      locale,
+      homepageFeaturedSlug: HOMEPAGE_FEATURED_CATEGORY_SLUG,
+      defaultCategorySortOrder: CATEGORY_SORT_ORDER_DEFAULT,
+    },
     {next: {revalidate: 60}},
   )
 }
