@@ -108,7 +108,7 @@ export default function Navigation({ categories, locale }: NavigationProps) {
                 <Link
                   href="/"
                   onClick={() => setIsOpen(false)}
-                  className="font-serif text-base tracking-widest lowercase text-black hover:opacity-50 transition-opacity"
+                  className="font-serif text-base tracking-widest text-black hover:opacity-50 transition-opacity"
                 >
                   František Pavlík
                 </Link>
