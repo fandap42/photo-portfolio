@@ -37,7 +37,7 @@ export interface PhotoGroup {
 
 const categoriesQuery = groq`
   *[_type == "category" && defined(slug.current) && slug.current != $homepageFeaturedSlug]
-    | order(coalesce(titleEn, title, titleCs) asc) {
+    | order(coalesce(sortOrder, 100) asc, coalesce(titleEn, title, titleCs) asc) {
     "id": _id,
     "title": select(
       $locale == "cs" => coalesce(titleCs, titleEn, title),

@@ -104,6 +104,15 @@ export default function Navigation({ categories, locale }: NavigationProps) {
           {/* Navigation links – small text, top-left aligned */}
           <nav className="pt-16 pl-8">
             <ul className="flex flex-col items-start gap-4">
+              <li>
+                <Link
+                  href="/"
+                  onClick={() => setIsOpen(false)}
+                  className="font-serif text-base tracking-widest lowercase text-black hover:opacity-50 transition-opacity"
+                >
+                  František Pavlík
+                </Link>
+              </li>
               {categories.map((category) => (
                 <li key={category.slug}>
                   <Link

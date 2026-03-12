@@ -37,6 +37,14 @@ export const categoryType = defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: 'sortOrder',
+      title: 'Sort order',
+      type: 'number',
+      description: 'Lower number is shown first in navigation drawer.',
+      initialValue: 100,
+      validation: (Rule) => Rule.required().integer().min(0),
+    }),
+    defineField({
       name: 'groups',
       title: 'Photo groups',
       type: 'array',
@@ -112,4 +120,14 @@ export const categoryType = defineType({
       }
     },
   },
+  orderings: [
+    {
+      title: 'Sort order (asc)',
+      name: 'sortOrderAsc',
+      by: [
+        {field: 'sortOrder', direction: 'asc'},
+        {field: 'titleEn', direction: 'asc'},
+      ],
+    },
+  ],
 })
