@@ -5,8 +5,8 @@ import { getCategories } from "@/lib/data";
 import { getRequestLocale } from "@/lib/i18n.server";
 
 export const metadata: Metadata = {
-  title: "František Pavlík – Photography",
-  description: "Photography portfolio of František Pavlík",
+  title: "František Pavlík",
+  description: "František Pavlík",
 };
 
 export default async function RootLayout({
