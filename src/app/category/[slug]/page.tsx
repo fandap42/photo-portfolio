@@ -76,11 +76,6 @@ export default async function CategoryPage({ params }: Props) {
                   group.photos.length <= 1
                     ? "grid-cols-1"
                     : "grid-cols-1 sm:grid-cols-2 sm:items-center"
-                } ${
-                  group.photos.length === 2 &&
-                  group.photos.every((photo) => photo.width >= photo.height)
-                    ? "xl:max-w-[66.666%] xl:mx-auto"
-                    : ""
                 }`}
               >
                 {group.photos.map((photo) => (
