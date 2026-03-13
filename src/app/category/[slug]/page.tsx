@@ -45,7 +45,7 @@ export default async function CategoryPage({ params }: Props) {
   return (
     <main className="min-h-screen px-6 lg:px-12 xl:px-16 pt-[calc(env(safe-area-inset-top)+5.5rem)] sm:pt-28 pb-16">
       {/* Category heading */}
-      <h1 className="mb-10 font-serif text-xl sm:text-2xl tracking-wide text-center">
+      <h1 className="mb-10 font-serif text-lg sm:text-xl tracking-wide text-center">
         {category.title}
       </h1>
 
@@ -102,7 +102,7 @@ export default async function CategoryPage({ params }: Props) {
       <div className="mt-16 text-center">
         <Link
           href="/"
-          className="font-serif text-base tracking-widest hover:opacity-50 transition-opacity"
+          className="font-serif text-sm tracking-widest hover:opacity-50 transition-opacity"
         >
           ← {labels.back}
         </Link>
