@@ -58,7 +58,7 @@ export default async function CategoryPage({ params }: Props) {
                 group.photos.length <= 1
                   ? "grid-cols-1"
                   : group.photos.length === 2
-                    ? "grid-cols-1 sm:grid-cols-2"
+                    ? "grid-cols-1 sm:grid-cols-2 sm:items-center"
                     : "grid-cols-1 sm:grid-cols-2 xl:grid-cols-3"
               }`}
             >
