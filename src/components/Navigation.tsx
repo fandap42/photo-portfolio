@@ -70,7 +70,7 @@ export default function Navigation({ categories, locale }: NavigationProps) {
           <button
             onClick={toggleLocale}
             aria-label={labels.switchAriaLabel}
-            className="font-serif text-xs tracking-widest uppercase text-black hover:opacity-60 transition-opacity"
+            className="font-serif text-[0.6875rem] tracking-widest uppercase text-black hover:opacity-60 transition-opacity"
           >
             {labels.switchTo}
           </button>
@@ -91,7 +91,7 @@ export default function Navigation({ categories, locale }: NavigationProps) {
           <button
             onClick={toggleLocale}
             aria-label={labels.switchAriaLabel}
-            className="pointer-events-auto font-serif text-xs tracking-widest uppercase text-black hover:opacity-60 transition-opacity"
+            className="pointer-events-auto font-serif text-[0.6875rem] tracking-widest uppercase text-black hover:opacity-60 transition-opacity"
           >
             {labels.switchTo}
           </button>
@@ -108,7 +108,7 @@ export default function Navigation({ categories, locale }: NavigationProps) {
                 <Link
                   href="/"
                   onClick={() => setIsOpen(false)}
-                  className="font-serif text-base tracking-widest text-black hover:opacity-50 transition-opacity"
+                  className="font-serif text-sm tracking-widest text-black hover:opacity-50 transition-opacity"
                 >
                   František Pavlík
                 </Link>
@@ -118,7 +118,7 @@ export default function Navigation({ categories, locale }: NavigationProps) {
                   <Link
                     href={`/category/${category.slug}`}
                     onClick={() => setIsOpen(false)}
-                    className="font-serif text-base tracking-widest lowercase text-black hover:opacity-50 transition-opacity"
+                    className="font-serif text-sm tracking-widest lowercase text-black hover:opacity-50 transition-opacity"
                   >
                     {category.title}
                   </Link>

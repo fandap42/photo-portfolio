@@ -6,14 +6,14 @@ export default async function Home() {
   const featuredPhoto = await getFeaturedPhoto();
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center px-4">
+    <main className="flex h-[100dvh] overflow-hidden flex-col items-center justify-center px-4">
       {/* Photographer name */}
-      <h1 className="mb-8 font-serif text-xl sm:text-2xl tracking-wide text-center">
+      <h1 className="mb-8 font-serif text-lg sm:text-xl tracking-wide text-center">
         František Pavlík
       </h1>
 
       {/* Featured photo */}
-      <div className="relative w-full max-w-[300px] aspect-square overflow-hidden mb-8">
+      <div className="relative w-full max-w-[260px] aspect-square overflow-hidden mb-8">
         <Image
           src={
             featuredPhoto?.src ||
@@ -41,7 +41,7 @@ export default async function Home() {
       {/* Email */}
       <a
         href="mailto:pavlik.frantisek42@gmail.com"
-        className="font-serif text-xs tracking-widest text-black hover:opacity-50 transition-opacity"
+        className="font-serif text-[0.6875rem] tracking-widest text-black hover:opacity-50 transition-opacity"
       >
         pavlik.frantisek42@gmail.com
       </a>
