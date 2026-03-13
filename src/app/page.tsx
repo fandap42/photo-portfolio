@@ -6,7 +6,7 @@ export default async function Home() {
   const featuredPhoto = await getFeaturedPhoto();
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center px-4">
+    <main className="flex h-[100dvh] overflow-hidden flex-col items-center justify-center px-4">
       {/* Photographer name */}
       <h1 className="mb-8 font-serif text-lg sm:text-xl tracking-wide text-center">
         František Pavlík
