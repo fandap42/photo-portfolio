@@ -3,7 +3,6 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Menu, X } from "lucide-react";
 import { LOCALE_COOKIE_NAME, type Locale, getLocaleLabels } from "@/lib/i18n";
 
 interface NavigationCategory {
@@ -39,9 +38,11 @@ export default function Navigation({ categories, locale }: NavigationProps) {
           <button
             onClick={() => setIsOpen((prev) => !prev)}
             aria-label={isOpen ? "Close menu" : "Open menu"}
-            className="ml-0.5 flex items-center text-black hover:opacity-60 transition-opacity"
+            className={`ml-0.5 menu-toggle menu-toggle--sm ${isOpen ? "is-open" : ""}`}
           >
-            {isOpen ? <X size={20} strokeWidth={1.5} /> : <Menu size={20} strokeWidth={1.5} />}
+            <span className="menu-toggle__line menu-toggle__line--top" />
+            <span className="menu-toggle__line menu-toggle__line--middle" />
+            <span className="menu-toggle__line menu-toggle__line--bottom" />
           </button>
 
           <button
@@ -60,9 +61,11 @@ export default function Navigation({ categories, locale }: NavigationProps) {
           <button
             onClick={() => setIsOpen((prev) => !prev)}
             aria-label={isOpen ? "Close menu" : "Open menu"}
-            className="ml-0.4 pointer-events-auto text-black hover:opacity-60 transition-opacity"
+            className={`ml-0.4 pointer-events-auto menu-toggle menu-toggle--lg ${isOpen ? "is-open" : ""}`}
           >
-            {isOpen ? <X size={24} strokeWidth={1.5} /> : <Menu size={24} strokeWidth={1.5} />}
+            <span className="menu-toggle__line menu-toggle__line--top" />
+            <span className="menu-toggle__line menu-toggle__line--middle" />
+            <span className="menu-toggle__line menu-toggle__line--bottom" />
           </button>
 
           <button
@@ -85,7 +88,7 @@ export default function Navigation({ categories, locale }: NavigationProps) {
                 <Link
                   href="/"
                   onClick={() => setIsOpen(false)}
-                  className="font-serif text-sm tracking-widest text-black hover:opacity-50 transition-opacity"
+                  className="nav-category-link font-serif text-sm tracking-widest text-black"
                 >
                   František Pavlík
                 </Link>
@@ -95,7 +98,7 @@ export default function Navigation({ categories, locale }: NavigationProps) {
                   <Link
                     href={`/category/${category.slug}`}
                     onClick={() => setIsOpen(false)}
-                    className="font-serif text-sm tracking-widest lowercase text-black hover:opacity-50 transition-opacity"
+                    className="nav-category-link font-serif text-sm tracking-widest lowercase text-black"
                   >
                     {category.title}
                   </Link>
