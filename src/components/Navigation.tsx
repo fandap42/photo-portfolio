@@ -48,7 +48,7 @@ export default function Navigation({ categories, locale }: NavigationProps) {
           <button
             onClick={toggleLocale}
             aria-label={labels.switchAriaLabel}
-            className="mr-1 font-serif text-[0.6875rem] leading-none tracking-widest uppercase text-black hover:opacity-60 transition-opacity"
+            className="nav-category-link mr-1 font-serif text-[0.6875rem] leading-none tracking-widest uppercase text-black"
           >
             {labels.switchTo}
           </button>
@@ -71,7 +71,7 @@ export default function Navigation({ categories, locale }: NavigationProps) {
           <button
             onClick={toggleLocale}
             aria-label={labels.switchAriaLabel}
-            className="pointer-events-auto font-serif text-[0.6875rem] tracking-widest uppercase text-black hover:opacity-60 transition-opacity"
+            className="pointer-events-auto nav-category-link font-serif text-[0.6875rem] tracking-widest uppercase text-black"
           >
             {labels.switchTo}
           </button>
