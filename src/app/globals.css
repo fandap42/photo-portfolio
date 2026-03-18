@@ -71,20 +71,22 @@ body {
   top: 78%;
 }
 
-.menu-toggle:hover:not(.is-open) .menu-toggle__line--top,
-.menu-toggle:focus-visible:not(.is-open) .menu-toggle__line--top {
-  top: 35%;
-}
+@media (hover: hover) and (pointer: fine) {
+  .menu-toggle:hover:not(.is-open) .menu-toggle__line--top,
+  .menu-toggle:focus-visible:not(.is-open) .menu-toggle__line--top {
+    top: 35%;
+  }
 
-.menu-toggle:hover:not(.is-open) .menu-toggle__line--middle,
-.menu-toggle:focus-visible:not(.is-open) .menu-toggle__line--middle {
-  opacity: 0;
-  transform: translateY(-50%) scaleX(0.5);
-}
+  .menu-toggle:hover:not(.is-open) .menu-toggle__line--middle,
+  .menu-toggle:focus-visible:not(.is-open) .menu-toggle__line--middle {
+    opacity: 0;
+    transform: translateY(-50%) scaleX(0.5);
+  }
 
-.menu-toggle:hover:not(.is-open) .menu-toggle__line--bottom,
-.menu-toggle:focus-visible:not(.is-open) .menu-toggle__line--bottom {
-  top: 65%;
+  .menu-toggle:hover:not(.is-open) .menu-toggle__line--bottom,
+  .menu-toggle:focus-visible:not(.is-open) .menu-toggle__line--bottom {
+    top: 65%;
+  }
 }
 
 .menu-toggle.is-open .menu-toggle__line--top {

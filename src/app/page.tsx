@@ -33,7 +33,7 @@ export default async function Home() {
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Instagram"
-        className="mb-4 text-black hover:opacity-50 transition-opacity"
+        className="mb-4 text-black"
       >
         <SiInstagram size={44} />
       </a>
@@ -41,7 +41,7 @@ export default async function Home() {
       {/* Email */}
       <a
         href="mailto:pavlik.frantisek42@gmail.com"
-        className="font-serif text-[0.6875rem] tracking-widest text-black hover:opacity-50 transition-opacity"
+        className="font-serif text-[0.6875rem] tracking-widest text-black"
       >
         pavlik.frantisek42@gmail.com
       </a>
