@@ -102,7 +102,7 @@ export default async function CategoryPage({ params }: Props) {
       <div className="mt-16 text-center">
         <Link
           href="/"
-          className="font-serif text-sm tracking-widest hover:opacity-50 transition-opacity"
+          className="nav-category-link font-serif text-sm tracking-widest text-black"
         >
           ← {labels.back}
         </Link>
