@@ -90,7 +90,7 @@ export default function Navigation({ categories, locale }: NavigationProps) {
                   onClick={() => setIsOpen(false)}
                   className="nav-category-link font-serif text-sm tracking-widest text-black"
                 >
-                  František Pavlík
+                  františek pavlík
                 </Link>
               </li>
               {categories.map((category) => (

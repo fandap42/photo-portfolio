@@ -22,7 +22,7 @@ export async function generateMetadata({ params }: Props) {
   const category = await getCategoryBySlug(slug, locale);
   if (!category) return {};
   return {
-    title: `${category.title} – František Pavlík`,
+    title: `${category.title} – františek pavlík`,
   };
 }
 
