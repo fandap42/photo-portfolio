@@ -2,8 +2,6 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { LOCALE_COOKIE_NAME, type Locale, getLocaleLabels } from "@/lib/i18n";
 
 interface NavigationCategory {
   id: string;
@@ -13,19 +11,10 @@ interface NavigationCategory {
 
 interface NavigationProps {
   categories: NavigationCategory[];
-  locale: Locale;
 }
 
-export default function Navigation({ categories, locale }: NavigationProps) {
+export default function Navigation({ categories }: NavigationProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const router = useRouter();
-  const labels = getLocaleLabels(locale);
-
-  function toggleLocale() {
-    const nextLocale = locale === "cs" ? "en" : "cs";
-    document.cookie = `${LOCALE_COOKIE_NAME}=${nextLocale}; Path=/; Max-Age=31536000; SameSite=Lax`;
-    router.refresh();
-  }
 
   return (
     <>
@@ -33,7 +22,7 @@ export default function Navigation({ categories, locale }: NavigationProps) {
       <div
         className="fixed inset-x-0 top-0 z-[60] bg-white sm:hidden"
       >
-        <div className="mx-auto flex h-12 items-center justify-between px-5">
+        <div className="mx-auto flex h-12 items-center px-5">
           {/* Menu trigger / close button at the same top-left position */}
           <button
             onClick={() => setIsOpen((prev) => !prev)}
@@ -44,20 +33,12 @@ export default function Navigation({ categories, locale }: NavigationProps) {
             <span className="menu-toggle__line menu-toggle__line--middle" />
             <span className="menu-toggle__line menu-toggle__line--bottom" />
           </button>
-
-          <button
-            onClick={toggleLocale}
-            aria-label={labels.switchAriaLabel}
-            className="nav-category-link mr-1 font-serif text-[0.6875rem] leading-none tracking-widest uppercase text-black"
-          >
-            {labels.switchTo}
-          </button>
         </div>
       </div>
 
       {/* Desktop controls: no full-width bar */}
       <div className="fixed inset-x-0 top-0 z-[60] hidden sm:block pointer-events-none">
-        <div className="mx-auto flex items-center justify-between px-6 py-5 lg:px-12 xl:px-16">
+        <div className="mx-auto flex items-center px-6 py-5 lg:px-12 xl:px-16">
           <button
             onClick={() => setIsOpen((prev) => !prev)}
             aria-label={isOpen ? "Close menu" : "Open menu"}
@@ -66,14 +47,6 @@ export default function Navigation({ categories, locale }: NavigationProps) {
             <span className="menu-toggle__line menu-toggle__line--top" />
             <span className="menu-toggle__line menu-toggle__line--middle" />
             <span className="menu-toggle__line menu-toggle__line--bottom" />
-          </button>
-
-          <button
-            onClick={toggleLocale}
-            aria-label={labels.switchAriaLabel}
-            className="pointer-events-auto nav-category-link font-serif text-[0.6875rem] tracking-widest uppercase text-black"
-          >
-            {labels.switchTo}
           </button>
         </div>
       </div>

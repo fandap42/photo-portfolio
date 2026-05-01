@@ -29,7 +29,7 @@ export default async function RootLayout({
         />
       </head>
       <body className="bg-white text-black antialiased font-serif">
-        <Navigation categories={categories} locale={locale} />
+        <Navigation categories={categories} />
         {children}
       </body>
     </html>
