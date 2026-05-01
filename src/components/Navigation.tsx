@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import Link from "next/link";
 
 interface NavigationCategory {
   id: string;
   slug: string;
   title: string;
+  gap?: boolean;
 }
 
 interface NavigationProps {
@@ -67,15 +68,18 @@ export default function Navigation({ categories }: NavigationProps) {
                 </Link>
               </li>
               {categories.map((category) => (
-                <li key={category.slug}>
-                  <Link
-                    href={`/category/${category.slug}`}
-                    onClick={() => setIsOpen(false)}
-                    className="nav-category-link font-serif text-sm tracking-widest lowercase text-black"
-                  >
-                    {category.title}
-                  </Link>
-                </li>
+                <Fragment key={category.slug}>
+                  {category.gap ? <li aria-hidden="true" className="h-[1.25rem]" /> : null}
+                  <li>
+                    <Link
+                      href={`/category/${category.slug}`}
+                      onClick={() => setIsOpen(false)}
+                      className="nav-category-link font-serif text-sm tracking-widest lowercase text-black"
+                    >
+                      {category.title}
+                    </Link>
+                  </li>
+                </Fragment>
               ))}
             </ul>
           </nav>

@@ -11,6 +11,7 @@ export interface Category {
   id: string;
   slug: string;
   title: string;
+  gap?: boolean;
 }
 
 export interface Photo {
@@ -44,7 +45,8 @@ const categoriesQuery = groq`
       $locale == "cs" => coalesce(titleCs, titleEn, title),
       coalesce(titleEn, titleCs, title)
     ),
-    "slug": slug.current
+    "slug": slug.current,
+    "gap": coalesce(gap, false)
   }
 `
 
