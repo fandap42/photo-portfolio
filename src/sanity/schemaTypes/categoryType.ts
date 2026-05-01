@@ -45,6 +45,16 @@ export const categoryType = defineType({
       validation: (Rule) => Rule.required().integer().min(0),
     }),
     defineField({
+      name: 'gap',
+      title: 'Gap',
+      type: 'boolean',
+      description: 'Adds an empty spacer before this category in the menu.',
+      initialValue: false,
+      options: {
+        layout: 'switch',
+      },
+    }),
+    defineField({
       name: 'groups',
       title: 'Photo groups',
       type: 'array',
