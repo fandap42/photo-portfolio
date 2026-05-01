@@ -35,7 +35,12 @@ body {
 
 .menu-toggle {
   --menu-size: 20px;
-  --line-thickness: 1.5px;
+  --line-thickness: 1.3px;
+  --line-top: 5px;
+  --line-middle: 10px;
+  --line-bottom: 15px;
+  --line-top-hover: 7px;
+  --line-bottom-hover: 13px;
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -47,6 +52,11 @@ body {
 
 .menu-toggle--lg {
   --menu-size: 24px;
+  --line-top: 6px;
+  --line-middle: 12px;
+  --line-bottom: 18px;
+  --line-top-hover: 8px;
+  --line-bottom-hover: 16px;
 }
 
 .menu-toggle__line {
@@ -54,27 +64,30 @@ body {
   left: 0;
   width: 100%;
   height: var(--line-thickness);
+  border-radius: 9999px;
   background-color: currentColor;
   transform: translateY(-50%) rotate(0deg);
+  transform-origin: center;
+  backface-visibility: hidden;
   transition: top 260ms ease, transform 260ms ease, opacity 180ms ease;
 }
 
 .menu-toggle__line--top {
-  top: 22%;
+  top: var(--line-top);
 }
 
 .menu-toggle__line--middle {
-  top: 50%;
+  top: var(--line-middle);
 }
 
 .menu-toggle__line--bottom {
-  top: 78%;
+  top: var(--line-bottom);
 }
 
 @media (hover: hover) and (pointer: fine) {
   .menu-toggle:hover:not(.is-open) .menu-toggle__line--top,
   .menu-toggle:focus-visible:not(.is-open) .menu-toggle__line--top {
-    top: 35%;
+    top: var(--line-top-hover);
   }
 
   .menu-toggle:hover:not(.is-open) .menu-toggle__line--middle,
@@ -85,7 +98,7 @@ body {
 
   .menu-toggle:hover:not(.is-open) .menu-toggle__line--bottom,
   .menu-toggle:focus-visible:not(.is-open) .menu-toggle__line--bottom {
-    top: 65%;
+    top: var(--line-bottom-hover);
   }
 }
 
