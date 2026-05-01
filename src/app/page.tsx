@@ -39,12 +39,9 @@ export default async function Home() {
       </a>
 
       {/* Email */}
-      <a
-        href="mailto:pavlik.frantisek42@gmail.com"
-        className="font-serif text-[0.6875rem] tracking-widest text-black"
-      >
+      <span className="font-serif text-[0.6875rem] tracking-widest text-black">
         pavlik.frantisek42@gmail.com
-      </a>
+      </span>
     </main>
   );
 }
